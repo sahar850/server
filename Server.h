@@ -5,20 +5,16 @@
 #ifndef SERVER_SERVER_H
 #define SERVER_SERVER_H
 
+class Server {
 
-class server {
 public:
-    server(int port);
+    Server(int port);
     void start();
     void stop();
 private:
     void handleClient(int clientSocket) ;
-
     int port;
     int serverSocket;
-
-    int calc(int arg1, const char op,int arg2)const;
 };
-
 
 #endif //SERVER_SERVER_H
