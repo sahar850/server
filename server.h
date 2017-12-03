@@ -7,6 +7,8 @@
 
 
 class server {
+private:
+    void handleClient(int clientSocket);
 
 };
 
