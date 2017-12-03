@@ -7,9 +7,17 @@
 
 
 class server {
+public:
+    server(int port);
+    void start();
+    void stop();
 private:
     void handleClient(int clientSocket);
 
+    int port;
+    int serverSocket;
+
+    int calc(int arg1, const char op,int arg2)const;
 };
 
 
