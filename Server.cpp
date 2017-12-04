@@ -10,7 +10,7 @@
 #include <iostream>
 #include <stdio.h>
 
-using namespace sd;
+using namespace std;
 #define MAX_CONNECTED_CLIENTS 2
 
 Server::
