@@ -45,7 +45,7 @@ void Server::start() {
             numOfClients++;
             clientSocket1 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
             cout << "Client connected" << endl;
-
+            cout<<"waiting for the other player to connect";
             if (clientSocket1 == -1) {
                 numOfClients--;
                 //******************************************************************************
@@ -56,6 +56,7 @@ void Server::start() {
                 cout << "Error writing to socket" << endl;
             }
         }
+
        if(numOfClients == 1){
            clientSocket2 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
            cout << "Client connected" << endl;
