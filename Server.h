@@ -12,7 +12,7 @@ public:
     void start();
     void stop();
 private:
-    void handleClient(int clientSocket, int clientSocket2) ;
+    bool handleClient(int clientSocket, int clientSocket2) ;
     int port;
     int serverSocket;
 };
