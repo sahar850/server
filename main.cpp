@@ -3,7 +3,7 @@
 #include "Server.h"
 using namespace std;
 int main() {
-    Server server(8000);
+    Server server(6887);
     try {
         server.start();
     } catch (const char *msg) {
