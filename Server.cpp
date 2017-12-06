@@ -42,28 +42,57 @@ void Server::start() {
     while (numOfClients < MAX_CONNECTED_CLIENTS) {
 // Accept a new client connection
         cout << "Waiting for client connections..." << endl;
-        if(numOfClients == 0) {
+
+        cout << numOfClients << endl;
+        if (numOfClients == 0) {
             clientSocket1 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
             cout << "Client connected" << endl;
             numOfClients++;
             if (clientSocket1 == -1) {
-                numOfClients--;
-                //******************************************************************************
-                throw "Error on accept";
+                throw "Error on accept 11111";
             }
         }
-        if(numOfClients == 1){
+        cout << numOfClients << endl;
+        if (numOfClients == 1) {
             clientSocket2 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
             cout << "Client connected" << endl;
             numOfClients++;
             if (clientSocket2 == -1) {
-                numOfClients--;
-                //******************************************************************************
                 throw "Error on accept";
             }
         }
+    }
 
         if (numOfClients == MAX_CONNECTED_CLIENTS) {
+            int i;
+            //player 1
+            int n = read(clientSocket1, &i, sizeof(i));
+            cout<<endl<<"read1 "<<i<<endl;
+            if (n == -1) {
+                cout << "Error reading from socket" << endl;
+            }
+            i = 1;
+            n = write(clientSocket1, &i, sizeof(i));
+            if (n == -1) {
+                cout << "Error writing to socket" << endl;
+            }
+            //player2
+            n = read(clientSocket2, &i, sizeof(i));
+            cout<<endl<<"read2 "<<i<<endl;
+            if (n == -1) {
+                cout << "Error reading from socket" << endl;
+            }
+            i = 2;
+            n = write(clientSocket2, &i, sizeof(i));
+            if (n == -1) {
+                cout << "Error writing to socket" << endl;
+            }
+            n = read(clientSocket2, &i, sizeof(i));
+            cout<<endl<<"read3 "<<i<<endl;
+            if (n == -1) {
+                cout << "Error reading from socket" << endl;
+            }
+
             while(true) {
                if(!handleClient(clientSocket1, clientSocket2)){
                    break;
@@ -77,34 +106,48 @@ void Server::start() {
         close(clientSocket1);
         close(clientSocket2);
     }
-}
+
 
 
 // Handle requests from a specific client
 bool Server::handleClient(int clientSocket, int clientSocket2) {
-    int cordination[2];
+    int rowCordination, colCordination;
     char op;
    // while (true) {
 // Read new exercise arguments
-        int n = read(clientSocket, &cordination, sizeof (cordination));
-        if(cordination[0]== -1&& cordination[1]== -1){
-            return false;
-        }
+        int n = read(clientSocket, &rowCordination, sizeof (rowCordination));
+
         if (n == -1) {
-            cout << "Error reading arg1" << endl;
+            cout << "Error reading rowCordination" << endl;
             return false;
         }
         if (n == 0) {
             cout << "Client disconnected" << endl;
             return false;
         }
+     n = read(clientSocket, &colCordination, sizeof (colCordination));
+    if (n == -1) {
+        cout << "Error reading colCordination" << endl;
+        return false;
+    }
+    if (n == 0) {
+        cout << "Client disconnected" << endl;
+        return false;
+    }
+    if(rowCordination == -1 && colCordination== -1) {
+        return false;
+    }
 // Write the result back to the client
 
-        n = write(clientSocket2, &cordination, sizeof(cordination));
+        n = write(clientSocket2, &rowCordination, sizeof(rowCordination));
         if (n == -1) {
             cout << "Error writing to socket" << endl;
             return false;
         }
-  //  }
+     n = write(clientSocket2, &colCordination, sizeof(colCordination));
+    if (n == -1) {
+        cout << "Error writing to socket" << endl;
+        return false;
+    }
     return true;
 }
