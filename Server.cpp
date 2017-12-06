@@ -101,7 +101,7 @@ void Server::start() {
                     break;
                 }
             }
-            numOfClients = 0;
+           // numOfClients = 0;
         }
 // Close communication with the client
         close(clientSocket1);
@@ -135,7 +135,7 @@ bool Server::handleClient(int clientSocket, int clientSocket2) {
         cout << "Client disconnected" << endl;
         return false;
     }
-    if(rowCordination == -1 && colCordination== -1) {
+    if(rowCordination == -2 && colCordination== -2) {
         return false;
     }
 // Write the result back to the client
