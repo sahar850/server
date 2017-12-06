@@ -101,6 +101,7 @@ void Server::start() {
                     break;
                 }
             }
+            numOfClients = 0;
         }
 // Close communication with the client
         close(clientSocket1);
