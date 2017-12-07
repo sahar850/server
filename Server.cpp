@@ -47,7 +47,6 @@ void Server::start() {
 // Close communication with the client
         stop();
         numOfClients = 0;
-
     }
  }
 
