@@ -47,19 +47,15 @@ void Server::start() {
     }
  }
 
-
 void Server::stop() {
     close(clientSocket1);
     close(clientSocket2);
 }
 
-
 void Server::connect (sockaddr_in &clientAddress,socklen_t &clientAddressLen) {
     while (numOfClients < MAX_CONNECTED_CLIENTS) {
 // Accept a new client connection
         cout << "Waiting for client connections..." << endl;
-
-        cout << numOfClients << endl;
         if (numOfClients == 0) {
             clientSocket1 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
             cout << "Client connected" << endl;
@@ -79,7 +75,6 @@ void Server::connect (sockaddr_in &clientAddress,socklen_t &clientAddressLen) {
         }
     }
 }
-
 
 void Server::ClientCom() {
     if (numOfClients == MAX_CONNECTED_CLIENTS) {
@@ -122,7 +117,6 @@ void Server::ClientCom() {
     }
 }
 
-
 // Handle requests from a specific client
 bool Server::handleClient(int clientSocket, int clientSocket2) {
     int rowCordination, colCordination;
@@ -160,6 +154,10 @@ bool Server::handleClient(int clientSocket, int clientSocket2) {
     n = write(clientSocket2, &colCordination, sizeof(colCordination));
     if (n == -1) {
         cout << "Error writing to socket" << endl;
+        return false;
+    }
+    if (n == 0) {
+        cout << "Client disconnected" << endl;
         return false;
     }
     return true;
