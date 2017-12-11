@@ -18,8 +18,6 @@ Server::
 Server(int port) : port(port), serverSocket(0) { cout << "Server" << endl; }
 void Server::start() {
     numOfClients = 0;
-   /* int clientSocket1;
-    int clientSocket2;*/
 // Create a socket point
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket == -1) {
@@ -36,7 +34,6 @@ void Server::start() {
     }
 // Start listening to incoming connections
     listen(serverSocket, MAX_CONNECTED_CLIENTS);
-    puts("aaaa");
 // Define the client socket's structures
     struct sockaddr_in clientAddress;
     socklen_t clientAddressLen;
@@ -47,9 +44,8 @@ void Server::start() {
 // Close communication with the client
         stop();
         numOfClients = 0;
-
     }
- }
+}
 
 
 void Server::stop() {
@@ -87,33 +83,16 @@ void Server::connect (sockaddr_in &clientAddress,socklen_t &clientAddressLen) {
 
 void Server::ClientCom() {
     if (numOfClients == MAX_CONNECTED_CLIENTS) {
-        int i;
-        //player 1
-        int n = read(clientSocket1, &i, sizeof(i));
-        cout << endl << "read1 " << i << endl;
-        if (n == -1) {
-            cout << "Error reading from socket" << endl;
-        }
-        i = 1;
-        n = write(clientSocket1, &i, sizeof(i));
+        int i = 1;
+        int n = write(clientSocket1, &i, sizeof(i));
         if (n == -1) {
             cout << "Error writing to socket" << endl;
         }
         //player2
-        n = read(clientSocket2, &i, sizeof(i));
-        cout << endl << "read2 " << i << endl;
-        if (n == -1) {
-            cout << "Error reading from socket" << endl;
-        }
         i = 2;
         n = write(clientSocket2, &i, sizeof(i));
         if (n == -1) {
             cout << "Error writing to socket" << endl;
-        }
-        n = read(clientSocket2, &i, sizeof(i));
-        cout << endl << "read3 " << i << endl;
-        if (n == -1) {
-            cout << "Error reading from socket" << endl;
         }
     }
     while (true) {
@@ -130,8 +109,6 @@ void Server::ClientCom() {
 // Handle requests from a specific client
 bool Server::handleClient(int clientSocket, int clientSocket2) {
     int rowCordination, colCordination;
-    char op;
-    // while (true) {
 // Read new exercise arguments
     int n = read(clientSocket, &rowCordination, sizeof (rowCordination));
 
