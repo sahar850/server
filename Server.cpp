@@ -79,6 +79,7 @@ void Server::connect (sockaddr_in &clientAddress,socklen_t &clientAddressLen) {
             cout << "Client connected" << endl;
             numOfClients++;
             int i = 2;
+            //write to first player that the other player connected
             int n = write(clientSocket1, &i, sizeof(i));
             if (n == -1) {
                 cout << "Error writing to socket" << endl;
@@ -109,11 +110,10 @@ void Server::ClientCom() {
     }
 }
 
-
 // Handle requests from a specific client
 bool Server::handleClient(int clientSocket, int clientSocket2) {
     int rowCordination, colCordination;
-// Read new exercise arguments
+// Read new exercise arguments - read coordinates as two int
     int n = read(clientSocket, &rowCordination, sizeof (rowCordination));
 
     if (n == -1) {
@@ -136,8 +136,7 @@ bool Server::handleClient(int clientSocket, int clientSocket2) {
     if(rowCordination == -2 && colCordination== -2) {
         return false;
     }
-// Write the result back to the client
-
+// Write the result back to the client - write coordinates as two int
     n = write(clientSocket2, &rowCordination, sizeof(rowCordination));
     if (n == -1) {
         cout << "Error writing to socket" << endl;
