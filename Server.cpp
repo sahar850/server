@@ -42,15 +42,15 @@ void Server::start() {
         connect(clientAddress, clientAddressLen);
         ClientCom();
 // Close communication with the client
-        stop();
+        close(clientSocket1);
+        close(clientSocket2);
         numOfClients = 0;
     }
 }
 
 
 void Server::stop() {
-    close(clientSocket1);
-    close(clientSocket2);
+    close(serverSocket);
 }
 
 
@@ -59,20 +59,37 @@ void Server::connect (sockaddr_in &clientAddress,socklen_t &clientAddressLen) {
 // Accept a new client connection
         cout << "Waiting for client connections..." << endl;
 
-        cout << numOfClients << endl;
+        //player1
         if (numOfClients == 0) {
             clientSocket1 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
             cout << "Client connected" << endl;
             numOfClients++;
+            int i = 1;
+            int n = write(clientSocket1, &i, sizeof(i));
+            if (n == -1) {
+                cout << "Error writing to socket" << endl;
+            }
             if (clientSocket1 == -1) {
                 throw runtime_error("Error on accept client 1");
             }
         }
-        cout << numOfClients << endl;
+        //player2
         if (numOfClients == 1) {
             clientSocket2 = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientAddressLen);
             cout << "Client connected" << endl;
             numOfClients++;
+            int i = 2;
+            int n = write(clientSocket1, &i, sizeof(i));
+            if (n == -1) {
+                cout << "Error writing to socket" << endl;
+            }
+            if (clientSocket1 == -1) {
+                throw runtime_error("Error on accept client 1");
+            }
+            n = write(clientSocket2, &i, sizeof(i));
+            if (n == -1) {
+                cout << "Error writing to socket" << endl;
+            }
             if (clientSocket2 == -1) {
                 throw runtime_error("Error on accept client 2");
             }
@@ -82,19 +99,6 @@ void Server::connect (sockaddr_in &clientAddress,socklen_t &clientAddressLen) {
 
 
 void Server::ClientCom() {
-    if (numOfClients == MAX_CONNECTED_CLIENTS) {
-        int i = 1;
-        int n = write(clientSocket1, &i, sizeof(i));
-        if (n == -1) {
-            cout << "Error writing to socket" << endl;
-        }
-        //player2
-        i = 2;
-        n = write(clientSocket2, &i, sizeof(i));
-        if (n == -1) {
-            cout << "Error writing to socket" << endl;
-        }
-    }
     while (true) {
         if (!handleClient(clientSocket1, clientSocket2)) {
             break;
